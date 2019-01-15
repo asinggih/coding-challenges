@@ -33,17 +33,17 @@ def sol_1(num_array):
     zero_count = 0
     idx_of_zero = None
     for item in num_array:
+
         if item == 0:
             zero_count += 1
             # memorise the index of the zero
             idx_of_zero = num_array.index(item)
-            continue
+        else:
+            total *= item
 
         # return all zeros if there's more than 1 zeros in the input array
         if zero_count > 1:
             return [0 for x in range(len(num_array))]
-
-        total *= item
 
     # Final output will be all zeros except at the idx_of_zero
     # from the original array, which will be the product of all numbers
@@ -116,7 +116,7 @@ def sol_2(num_array):
 
 
 if __name__ == "__main__":
-    x = [3, 2, 5, 4]
+    x = [5, 4, 3, 2, 1]
     print("Solution 1")
     print(sol_1(x))
     print()
