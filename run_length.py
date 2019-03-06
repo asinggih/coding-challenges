@@ -19,7 +19,7 @@ def rlencode(raw_string):
     Encoding raw string into run-length
     """
 
-    out_string = ""
+    out_container = []
     memorised_char = None
     count = 1
     for char in raw_string:
@@ -31,14 +31,23 @@ def rlencode(raw_string):
             count += 1
 
         else:
-            out_string += str(count) + memorised_char
+            # out_string += str(count) + memorised_char
+            out_container.append(str(count))
+            out_container.append(memorised_char)
             memorised_char = char   # update the memorised char
             count = 1               # reset count after looking at a new char
 
     # adding the last group of char(s) into out_string
-    out_string += str(count) + memorised_char
+    out_container.append(str(count))
+    out_container.append(memorised_char)
 
-    return out_string
+    # join the list to create a desired output format
+    out_string = "".join(out_container)
+
+    if len(out_string) < len(raw_string):
+        return out_string
+    else:
+        return raw_string
 
 
 def rldecode(encoded_string):
@@ -49,9 +58,13 @@ def rldecode(encoded_string):
     decoded = ""
     count = 0
     for i in range(len(encoded_string)):
-        if i % 2 == 0:  # Even index. Means we're looking at the count
-            count = int(encoded_string[i])
-        else:           # Odd index. Looking at the char
+        if i % 2 == 0:          # Even index. Means we're looking at the count
+            try:
+                count = int(encoded_string[i])
+            except ValueError:  # input is already decoded
+                return encoded_string
+
+        else:    # Odd index. Looking at the char
             decoded += encoded_string[i] * count
 
     return decoded
@@ -61,5 +74,8 @@ if __name__ == "__main__":
     a = "AAAABBBCCDAA"
     b = "AAAB"
     c = "4A3B2C1D2A"
+    d = "AABBCCAA"
+    e = "aabcccccaaa"
 
     print(rldecode(rlencode(a)) == a)
+    # print(rlencode(a))
