@@ -102,3 +102,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+ip_classifier_test_data.txt
